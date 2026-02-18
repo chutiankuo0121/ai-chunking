@@ -1,3 +1,26 @@
+Metadata-Version: 2.4
+Name: ai-chunking-ctk
+Version: 0.2.0
+Summary: Enterprise-grade context-aware semantic chunking library powered by LLMs.
+Author-email: Antigravity <assistant@deepmind.com>
+Project-URL: Homepage, https://github.com/example/ai-chunking
+Project-URL: Documentation, https://github.com/example/ai-chunking#readme
+Project-URL: Source, https://github.com/example/ai-chunking
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: tenacity>=8.0.0
+Requires-Dist: openai>=1.0.0
+Requires-Dist: tiktoken>=0.5.0
+
 # 🧠 Smart AI Chunking
 
 **Context-Aware Semantic Chunking for RAG**
@@ -17,18 +40,12 @@ Smart AI Chunking 是一个专为大模型（RAG）设计的高级文本切分�
 
 ## 📦 安装
 
-可以通过 PyPI 直接安装：
+*(假设本项目作为本地包使用)*
 
 ```bash
-pip install ai-chunking-ctk
-```
-
-或者从源码安装：
-
-```bash
-git clone https://github.com/chutiankuo0121/ai-chunking.git
+git clone https://github.com/your-repo/ai-chunking.git
 cd ai-chunking
-pip install .
+pip install -r requirements.txt
 ```
 
 ---

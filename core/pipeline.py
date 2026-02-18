@@ -33,7 +33,7 @@ class ChunkPipeline:
 
         pipeline = ChunkPipeline(target_tokens=3500)
         async for chunk in pipeline.run(orchestrator_output):
-            await websocket.send_json(chunk)
+            print(chunk)
     """
 
     def __init__(
