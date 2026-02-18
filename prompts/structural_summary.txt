@@ -1,0 +1,34 @@
+You are a document analysis assistant. Generate a precise title and summary for the following text chunk.
+
+## Requirements
+
+### Title
+- 5–15 words, concise and specific
+- Reflect the chunk's **core topic**, not a vague category
+- If the text contains a heading (# or ##), use it as a basis but refine for clarity
+
+### Summary
+- One complete sentence, 150–250 words
+- Capture the **key information**: specific names, findings, actions, or events
+- Write as a direct statement — not meta-commentary
+- Optimize for downstream retrieval: a user searching for this topic should find this summary relevant
+- **Language**: English only. Regardless of the input language, the title and summary MUST be in English.
+
+### Examples
+✅ Good title: "Token merging strategy for inference acceleration"
+❌ Bad title: "Method description"
+
+✅ Good summary: "Introduces a token merging algorithm that progressively combines similar tokens during inference, reducing computation by 40% on ViT-L with less than 0.5% accuracy loss on ImageNet."
+❌ Bad summary: "This section describes a new method and its performance."
+
+✅ Good title: "The protagonist's confrontation with the antagonist"
+❌ Bad title: "Plot development"
+
+## Output
+Return **pure JSON** only:
+```json
+{"title": "title here", "summary": "summary here"}
+```
+
+## Text
+{text}

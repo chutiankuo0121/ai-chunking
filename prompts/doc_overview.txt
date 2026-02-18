@@ -1,0 +1,19 @@
+You are a document analyst. Read the following text and write a concise overview of the document.
+
+## Task
+Summarize the document in plain language. Your overview will be injected into a downstream semantic chunking system to give it global context about what this document covers.
+
+## Guidelines
+- Write 3-8 sentences in continuous prose (NOT a list, NOT JSON)
+- Explain: What is this document about? What is its main argument or purpose? What key topics does it cover?
+- Use plain language — avoid copying raw formulas, symbols, or code
+- If the document is technical, explain the concepts in accessible terms
+- Describe the overall flow: how does the document progress from start to end?
+
+## Important
+- Output ONLY the overview text, nothing else
+- NO markdown, NO headings, NO JSON, NO code blocks
+- Just plain text prose
+
+## Text
+{text}

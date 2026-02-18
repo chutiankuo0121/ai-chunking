@@ -1,0 +1,118 @@
+# 🧠 Smart AI Chunking
+
+**Context-Aware Semantic Chunking for RAG**
+
+Smart AI Chunking 是一个专为大模型（RAG）设计的高级文本切分库。与传统的固定长度切分（Fixed-Size Chunking）不同，它采用**“先理解，后切分”**的两阶段策略，确保每个切片都包含完整的语义和全局上下文。
+
+---
+
+## ✨ 核心特性
+
+- **🧠 全局上下文感知 (Context-Aware)**: 在切分前先由 AI 通读全文，提取叙事大纲（Narrative）和全局摘要。切分时，每个块都知道自己在全文中的位置。
+- **🔪 语义坐标切分 (Coordinate Splitting)**: 不再机械地按 xxx 字切一刀，而是通过在文本中埋入隐形坐标，让 LLM 决定最自然的语义断点。
+- **🚀 全并发加速 (High Performance)**: 采用异步流水线设计，文档扫描、摘要生成、切片处理全部并发执行，速度极快。
+- **📝 标准化输出**: 每个块不仅包含文本，还包含**标题**、**摘要**和**上下文元数据**。
+
+---
+
+## 📦 安装
+
+*(假设本项目作为本地包使用)*
+
+```bash
+git clone https://github.com/your-repo/ai-chunking.git
+cd ai-chunking
+pip install -r requirements.txt
+```
+
+---
+
+## ⚡ 快速开始
+
+使用我们提供的高级 API，只需几行代码即可完成智能切分。
+
+```python
+import asyncio
+import json
+from ai_chunking import smart_chunk_file, get_openai_wrapper
+
+my_llm = get_openai_wrapper(
+    api_key="sk-...", 
+    base_url="https://...", 
+    model="deepseek-ai/deepseek-v3.2",
+    concurrency=20  # 并发数量
+)
+
+async def main():
+    file_path = "document.md"
+    
+    print(f"开始处理: {file_path}")
+    
+    async for chunk in smart_chunk_file(
+        file_path=file_path,
+        llm_func=my_llm,
+        target_tokens=3500,     # 每个块的目标长度
+        max_llm_context=256000  # 模型的最大上下文窗口
+    ):
+        # 打印完整的 JSON 结果
+        print(json.dumps(chunk, indent=2, ensure_ascii=False))
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+---
+
+## 🛠️ API 说明
+
+### `smart_chunk_file`
+
+这是本库的核心入口函数。
+
+```python
+async def smart_chunk_file(
+    file_path: str | Path,
+    llm_func: Callable[[str], Awaitable[str]],
+    target_tokens: int,
+    max_llm_context: int
+) -> AsyncGenerator[Dict, None]
+```
+
+#### 参数
+- **`file_path`**: 目标 Markdown 或文本文件路径。
+- **`llm_func`**: 用户提供的异步 LLM 调用函数。接收 `prompt` (str)，返回 `response` (str)。
+- **`target_tokens`**: **(必填)** 每个切片的期望 Token 数（例如 2000-4000）。建议设为模型上下文的 1/3 到 1/10。
+- **`max_llm_context`**: **(必填)** 当前 LLM 的最大上下文窗口（例如 128000）。系统会根据此值自动优化扫描步长。
+
+#### 返回值
+异步生成器，产出如下字典结构：
+
+```json
+{
+  "chunk_id": "ck_001",
+  "title": "Introduction to AI Chunking",
+  "summary": "This section introduces the concept of semantic chunking...",
+  "content": "Full text content of this chunk...",
+  "tokens": 850
+}
+```
+
+---
+
+## ⚙️ 原理简介
+
+1.  **Phase 1: Scanner (全知扫描)**
+    *   系统首先快速扫描整篇文档。
+    *   生成一份由此及彼的 **叙事大纲 (Narrative Plan)**。
+    *   为后续切分提供“上帝视角”。
+
+2.  **Phase 2: Splitter (坐标切分)**
+    *   根据目标 Token 数，将文本划分为待处理区间。
+    *   在区间内插入 `[ID: 10]` 等坐标标记。
+    *   LLM 结合 Phase 1 的记忆，告诉系统：“请在 ID 15 处切开，因为这里话题结束了”。
+
+---
+
+## 📄 License
+
+MIT License
