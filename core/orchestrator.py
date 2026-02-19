@@ -17,7 +17,7 @@ import asyncio
 from typing import List, Dict, AsyncGenerator, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from core.coordinate_splitter import CoordinateSplitter, SplitterInput
+    from .coordinate_splitter import CoordinateSplitter, SplitterInput
 
 logger = logging.getLogger("ai_chunking.core.orchestrator")
 

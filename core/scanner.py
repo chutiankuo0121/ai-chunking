@@ -14,8 +14,8 @@ from typing import Callable, Awaitable, Optional
 
 import tiktoken
 
-from core.memory import ProtocolMemory, GlobalProtocol, load_prompt, _safe_fill
-from core.tools import extract_narrative
+from .memory import ProtocolMemory, GlobalProtocol, load_prompt, _safe_fill
+from .tools import extract_narrative
 
 logger = logging.getLogger("ai_chunking.core.scanner")
 

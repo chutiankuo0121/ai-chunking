@@ -44,9 +44,9 @@ from ai_chunking import smart_chunk_file, get_openai_wrapper
 
 my_llm = get_openai_wrapper(
     api_key="sk-...", 
-    base_url="https://...", 
     model="deepseek-ai/deepseek-v3.2",
-    concurrency=20  # 并发数量
+    concurrency=20,  # 并发数量
+    base_url="https://..."
 )
 
 async def main():

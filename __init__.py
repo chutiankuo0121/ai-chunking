@@ -4,12 +4,12 @@ import logging
 from pathlib import Path
 from typing import Callable, Awaitable, AsyncGenerator, Dict, Union
 
-from core.coordinate_splitter import CoordinateSplitter, SplitterInput, ChunkMetadata
-from core.memory import ProtocolMemory
-from core.scanner import ScannerEngine
-from core.tools import ChunkResult, coordinate_split, quick_summary, extract_narrative
-from utils.matcher import CascadeMatcher
-from utils.logger import setup_logger
+from .core.coordinate_splitter import CoordinateSplitter, SplitterInput, ChunkMetadata
+from .core.memory import ProtocolMemory
+from .core.scanner import ScannerEngine
+from .core.tools import ChunkResult, coordinate_split, quick_summary, extract_narrative
+from .utils.matcher import CascadeMatcher
+from .utils.logger import setup_logger
 
 # 向后兼容
 ContextAwareSplitter = CoordinateSplitter
@@ -99,9 +99,9 @@ async def smart_chunk_file(
 
 def get_openai_wrapper(
     api_key: str,
+    model: str,
+    concurrency: int,
     base_url: str = None,
-    model: str,        # No default
-    concurrency: int,  # No default
 ) -> Callable[[str], Awaitable[str]]:
     """
     创建一个预配置的 OpenAI LLM 调用函数。
@@ -117,7 +117,7 @@ def get_openai_wrapper(
         符合 llm_func 签名的异步函数
     """
     from openai import AsyncOpenAI
-    from utils.api import llm_call, set_concurrency_limit
+    from .utils.api import llm_call, set_concurrency_limit
 
     # 配置全局并发
     set_concurrency_limit(concurrency)

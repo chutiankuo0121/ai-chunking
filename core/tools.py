@@ -23,9 +23,9 @@ import logging
 from typing import List, Dict, Callable, Awaitable, Union
 
 from pydantic import BaseModel
-from tenacity import retry, wait_random_exponential, stop_never, retry_if_exception_type
+from tenacity import retry, wait_random_exponential, stop_never, retry_if_exception_type, stop_after_attempt
 
-from core.memory import NarrativeItem, load_prompt
+from .memory import NarrativeItem, load_prompt
 
 logger = logging.getLogger("ai_chunking.core.tools")
 
@@ -302,7 +302,7 @@ def _log_retry(retry_state):
 
 @retry(
     wait=wait_random_exponential(min=1, max=60),
-    stop=stop_never,
+    stop=stop_after_attempt(5),
     retry=retry_if_exception_type(Exception),
     before_sleep=_log_retry,
 )

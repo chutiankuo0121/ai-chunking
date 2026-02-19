@@ -18,7 +18,7 @@ import tiktoken
 
 from .memory import ProtocolMemory
 from .tools import coordinate_split, quick_summary, ChunkResult
-from utils.matcher import CascadeMatcher
+from ..utils.matcher import CascadeMatcher
 
 logger = logging.getLogger("ai_chunking.core")
 
