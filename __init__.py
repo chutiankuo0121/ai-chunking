@@ -88,6 +88,7 @@ async def smart_chunk_file(
                 "chunk_id": chunk.get("id"),
                 "title": chunk.get("title", "Untitled"),
                 "summary": chunk.get("summary", ""),
+                "synthetic_qa": chunk.get("synthetic_qa", []),
                 "content": chunk.get("content", ""),
                 "tokens": chunk.get("tokens", 0),
             }

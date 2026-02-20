@@ -14,6 +14,11 @@ You are a document analysis assistant. Generate a precise title and summary for 
 - Optimize for downstream retrieval: a user searching for this topic should find this summary relevant
 - **Language**: English only. Regardless of the input language, the title and summary MUST be in English.
 
+### Synthetic QA
+- Generate **between 3 and 10 hypothetical questions** a user could ask that this chunk would perfectly answer.
+- Provide a brief, direct answer to each question.
+- **Language**: English only. This is critical for embedding-based question answering matching.
+
 ### Examples
 ✅ Good title: "Token merging strategy for inference acceleration"
 ❌ Bad title: "Method description"
@@ -27,7 +32,15 @@ You are a document analysis assistant. Generate a precise title and summary for 
 ## Output
 Return **pure JSON** only:
 ```json
-{"title": "title here", "summary": "summary here"}
+{
+  "title": "title here",
+  "summary": "summary here",
+  "synthetic_qa": [
+    {"q": "How is the RSI indicator calculated?", "a": "It is calculated using the average gain and loss over a 14-day period..."},
+    {"q": "What happens when the RSI falls below 30?", "a": "It generates a strong oversold signal indicating a potential buy..."},
+    {"q": "Can RSI be used for high-frequency trading?", "a": "No, this chunk explicitly states RSI lags too much for HFT..."}
+  ]
+}
 ```
 
 ## Text

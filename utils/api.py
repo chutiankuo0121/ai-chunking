@@ -46,19 +46,10 @@ async def llm_call(
                     max_tokens=32768,
                     stream=True,
                 )
-                
-                # 增加单次流式接收超时控制 (5分钟无响应)
-                async def _consume_stream():
-                    async for chunk in stream:
-                        delta = chunk.choices[0].delta if chunk.choices else None
-                        if delta and delta.content:
-                            parts.append(delta.content)
-
-                try:
-                    await asyncio.wait_for(_consume_stream(), timeout=300)
-                except asyncio.TimeoutError:
-                    logger.error(f"❌ LLM 请求超时 (5分钟无数据)，放弃本次请求")
-                    raise
+                async for chunk in stream:
+                    delta = chunk.choices[0].delta if chunk.choices else None
+                    if delta and delta.content:
+                        parts.append(delta.content)
                 
                 content = "".join(parts)
                 elapsed = time.time() - start_t

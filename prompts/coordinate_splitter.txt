@@ -60,6 +60,7 @@ For each chunk, return:
 - `end_quote`: The EXACT text of the chunk's **last complete sentence** (minimum 15 characters). This is the most critical field — the system uses it to locate the precise cut point in the original text. Copy it character-for-character from the source; do not paraphrase. **CRITICAL**: If the chunk reaches the very end of the provided text, you MUST quote the final sentence of the document. Do not leave any text unassigned.
 - `title`: A short descriptive title (5–15 words) reflecting the chunk's core topic. Use the Global Context to ensure titles are consistent with the document's terminology.
 - `summary`: A one-sentence summary (20–60 words) capturing the chunk's key information. Write as a direct statement, not meta-commentary (avoid "This section describes..."). Use the Section Summaries in memory to make this summary comprehensive.
+- `synthetic_qa`: A strictly formatted list of **at least 3 and at most 10** hypothetical questions that a user might ask, which this specific chunk can perfectly answer (plus the brief answer). This is CRITICAL for retrieval-augmented generation. 
 
 ## Output Format
 Return a **pure JSON array** with no additional text:
@@ -72,7 +73,12 @@ Return a **pure JSON array** with no additional text:
     "end_marker": "[ID: 8]",
     "end_quote": "Exact last sentence copied verbatim from the source text.",
     "title": "Descriptive chunk title",
-    "summary": "Direct statement summarizing the chunk's core content and key information."
+    "summary": "Direct statement summarizing the chunk's core content and key information.",
+    "synthetic_qa": [
+       {"q": "How is the RSI indicator calculated?", "a": "It is calculated using the average gain and loss over a 14-day period..."},
+       {"q": "What happens when the RSI falls below 30?", "a": "It generates a strong oversold signal indicating a potential buy..."},
+       {"q": "Can RSI be used for high-frequency trading?", "a": "No, this chunk explicitly states RSI lags too much for HFT..."}
+    ]
   }
 ]
 ```

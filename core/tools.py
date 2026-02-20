@@ -23,7 +23,7 @@ import logging
 from typing import List, Dict, Callable, Awaitable, Union
 
 from pydantic import BaseModel
-from tenacity import retry, wait_random_exponential, stop_never, retry_if_exception_type, stop_after_attempt
+from tenacity import retry, wait_random_exponential, stop_never, retry_if_exception_type
 
 from .memory import NarrativeItem, load_prompt
 
@@ -216,6 +216,7 @@ class ChunkResult(BaseModel):
     end_quote: str
     title: str
     summary: str
+    synthetic_qa: List[Dict[str, str]] = []
 
 
 
@@ -283,10 +284,11 @@ async def quick_summary(
         return {
             "title": data.get("title", "未命名章节"),
             "summary": data.get("summary", "无法解析摘要。"),
+            "synthetic_qa": data.get("synthetic_qa", [])
         }
     except Exception as e:
         logger.warning(f"Quick Summary Tool 失败: {e}")
-        return {"title": "章节", "summary": "自动结构化分块（摘要生成失败）。"}
+        return {"title": "章节", "summary": "自动结构化分块（摘要生成失败）。", "synthetic_qa": []}
 
 
 
@@ -302,7 +304,7 @@ def _log_retry(retry_state):
 
 @retry(
     wait=wait_random_exponential(min=1, max=60),
-    stop=stop_after_attempt(5),
+    stop=stop_never,
     retry=retry_if_exception_type(Exception),
     before_sleep=_log_retry,
 )
@@ -350,6 +352,7 @@ async def coordinate_split(
             end_quote=item.get("end_quote", ""),
             title=item.get("title", ""),
             summary=item.get("summary", ""),
+            synthetic_qa=item.get("synthetic_qa", []),
         ))
 
     logger.debug(f"Coordinate Split Tool: LLM 返回 {len(results)} 个切分方案")

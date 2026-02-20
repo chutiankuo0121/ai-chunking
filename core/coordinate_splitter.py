@@ -39,6 +39,7 @@ class ChunkMetadata(BaseModel):
     chunk_id: str
     title: str
     summary: str
+    synthetic_qa: list
     content: str
     length_tokens: int
 
@@ -121,6 +122,7 @@ class CoordinateSplitter:
                 chunk_id=str(c["id"]),
                 title=c["title"],
                 summary=c["summary"],
+                synthetic_qa=c.get("synthetic_qa", []),
                 content=c["content"],
                 length_tokens=c["tokens"],
             )
@@ -240,6 +242,7 @@ class CoordinateSplitter:
                         "id": res.chunk_id,
                         "title": res.title,
                         "summary": res.summary,
+                        "synthetic_qa": getattr(res, "synthetic_qa", []),
                         "content": chunk_content,
                         "tokens": self._count_tokens(chunk_content),
                     }
