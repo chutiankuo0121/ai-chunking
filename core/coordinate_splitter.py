@@ -273,6 +273,7 @@ class CoordinateSplitter:
                         "id": "remainder",
                         "title": "待定",
                         "summary": "",
+                        "synthetic_qa": [],
                         "content": remaining,
                         "tokens": remaining_tokens,
                         "_is_remainder": True, 

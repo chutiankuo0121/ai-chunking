@@ -223,6 +223,7 @@ async def _plan_and_execute(
                         "id": "bisect_a",
                         "title": m1.get("title", ""),
                         "summary": m1.get("summary", ""),
+                        "synthetic_qa": m1.get("synthetic_qa", []),
                         "content": part1,
                         "tokens": splitter._count_tokens(part1),
                     })
@@ -231,6 +232,7 @@ async def _plan_and_execute(
                         "id": "bisect_b",
                         "title": m2.get("title", ""),
                         "summary": m2.get("summary", ""),
+                        "synthetic_qa": m2.get("synthetic_qa", []),
                         "content": part2,
                         "tokens": splitter._count_tokens(part2),
                     }
@@ -241,6 +243,7 @@ async def _plan_and_execute(
                      meta = await splitter._quick_summary(sub_chunk["content"])
                      sub_chunk["title"] = meta.get("title", "续文")
                      sub_chunk["summary"] = meta.get("summary", "")
+                     sub_chunk["synthetic_qa"] = meta.get("synthetic_qa", [])
                 pending_chunk = sub_chunk
 
             else:
@@ -258,8 +261,9 @@ async def _plan_and_execute(
         summary_res = await splitter._quick_summary(node_content)
         return [{
             "id": "temp_medium",
-            "title": summary_res["title"],
-            "summary": summary_res["summary"],
+            "title": summary_res.get("title", ""),
+            "summary": summary_res.get("summary", ""),
+            "synthetic_qa": summary_res.get("synthetic_qa", []),
             "content": node_content,
             "tokens": node_tokens,
         }]
@@ -359,6 +363,7 @@ async def _plan_and_execute(
                 "id": f"err_{i}",
                 "title": "Error Chunk",
                 "summary": "Processing failed",
+                "synthetic_qa": [],
                 "content": "Content processing error",
                 "tokens": 0
             }

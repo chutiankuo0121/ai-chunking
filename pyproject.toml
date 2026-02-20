@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ai-chunking-ctk"
-version = "0.2.6"
+version = "0.2.7"
 description = "Enterprise-grade context-aware semantic chunking library powered by LLMs."
 authors = [
   { name = "Antigravity", email = "assistant@deepmind.com" },
