@@ -215,6 +215,7 @@ class ChunkPipeline:
                     buf["summary"] = (
                         buf.get("summary", "") + " " + chunk.get("summary", "")
                     ).strip()
+                    buf["synthetic_qa"] = buf.get("synthetic_qa", []) + chunk.get("synthetic_qa", [])
                     logger.debug(
                         f"Merged small chunk → buffer now {buf['tokens']} tokens"
                     )
@@ -276,6 +277,7 @@ class ChunkPipeline:
                                 "id": f"CK-{counter:03d}",
                                 "title": chunk["title"],
                                 "summary": f"{label}{original_summary}",
+                                "synthetic_qa": chunk.get("synthetic_qa", []),
                                 "content": piece,
                                 "tokens": self._count_tokens(piece),
                             }
